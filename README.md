@@ -150,26 +150,8 @@ En Adil Buluşma Noktası: Cafe X (Adalet Puanı: 3)
 
 ---
 
-## Katkıda Bulunma
-
-Katkılar memnuniyetle karşılanır. Fork -> Feature branch -> Pull request iş akışı kullanılabilir. Küçük iyileştirmeler için Issues açın veya direkt PR gönderin.
-
-**Kodlama tarzı:** Basit ve okunabilir olmalı; fonksiyonlar tek bir sorumluluk prensibine uygun tutulmalı.
-
----
-
-## Lisans
-
-Varsa buraya lisans bilgisi ekleyin (örn. MIT). Henüz lisans eklemediyseniz projenize uygun bir lisans eklemenizi öneririm.
-
----
-
 ## İletişim
 
 Proje sahibi: **bilalyazicioglu**
 
 Sorular/öneriler için GitHub Issues veya doğrudan repo sahibiyle iletişime geçebilirsiniz.
-
----
-
-*Not:* README içinde örnek konumlar, kullanım senaryoları veya `main.py`'den alınmış örnek çıktılar eklemek, projeyi kullanacak kişilerin işe başlamasını kolaylaştırır. İsterseniz ben `README.md` dosyasını doğrudan repo için hazır hâle getirecek şekilde (Türkçe veya İngilizce) daha kısa veya daha uzun bir versiyon daha oluşturayım.
