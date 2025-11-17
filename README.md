@@ -1,73 +1,175 @@
-🤝 Fair-Meetup Finder: Adil Buluşma Noktası Belirleyici
-Bu proje, üç farklı konumdaki arkadaş grubu için, herkesin yolculuk süresinin birbirine en yakın (en adil) olduğu buluşma noktasını bulmayı amaçlayan, Python tabanlı bir hafta sonu öğrenme projesidir.
+# Fair-Meetup-Finder
 
-Proje, düz çizgi mesafesi yerine, OpenRouteService (ORS) API'sinden alınan gerçek yolculuk sürelerini baz alarak en uygun çözümü optimize eder.
+**Adil Buluşma Noktası Belirleyici**
 
-✨ Nasıl Çalışır?
-Konum Girişi: Üç arkadaşın koordinatları (ARKADAS_KONUMLARI) koda girilir.
+Bu proje, üç farklı konumdaki arkadaş grubu için herkesin yolculuk süresinin birbirine en yakın (yani *en adil*) olduğu buluşma noktasını hesaplayan, Python tabanlı bir öğrenme projesidir. Düz çizgi mesafe yerine gerçek yolculuk sürelerini kullanarak karar verir.
 
-Aday Mekanlar: Önceden belirlenmiş potansiyel buluşma mekanları listesi (GEÇİCİ_ADAY_MEKANLAR) kullanılır.
+---
 
-Gerçek Süre Hesaplama: Her arkadaşın her bir aday mekana olan yolculuk süresi (YOLCULUK_MODU dikkate alınarak) ORS API aracılığıyla çekilir.
+## Özellikler
 
-Adalet Puanı: Her aday mekan için, üç yolculuk süresi arasındaki en büyük fark hesaplanır. Bu fark, mekanın "Adalet Puanı"dır.
+* Üç kullanıcı için aday buluşma noktalarından en adilini seçer.
+* OpenRouteService (ORS) API'si ile gerçek yolculuk sürelerini çeker (sürüş yaya vb. modlar desteklenir).
+* Adalet puanını, üç kullanıcının aday mekana varış süreleri arasındaki **maksimum fark** olarak hesaplar (düşük puan = daha adil).
+* Kolayca genişletilebilir: POI (restoran/kafe) çekme, harita görselleştirme, farklı optimizasyon kriterleri eklenebilir.
 
-Optimizasyon: Adalet Puanı en düşük olan mekan (yani sürelerin birbirine en yakın olduğu yer) En Adil Buluşma Noktası olarak seçilir.
+---
 
-⚙️ Kurulum ve Çalıştırma
-1. Kütüphaneleri Kurma
+## Hızlı Başlangıç (Quickstart)
 
-Proje için gerekli Python kütüphanelerini requirements.txt dosyasından kurun:
+Aşağıdaki adımlar, projeyi yerel makinenizde çalıştırmak için yeterlidir.
 
-Bash
+### Gereksinimler
+
+* Python 3.8 veya üstü
+* Bir sanal ortam (önerilir)
+* OpenRouteService API anahtarı (ücretsiz üyelik ile alınabilir)
+
+### 1) Depoyu klonlayın
+
+```bash
+git clone https://github.com/bilalyazicioglu/Fair-Meetup-Finder.git
+cd Fair-Meetup-Finder
+```
+
+### 2) Sanal ortam oluşturun ve bağımlılıkları kurun
+
+```bash
+python -m venv .venv
+source .venv/bin/activate    # macOS/Linux
+.\.venv\Scripts\activate   # Windows (PowerShell)
+
 pip install -r requirements.txt
-2. API Anahtarını Ayarlama (Çok Önemli!)
+```
 
-Bu proje, kodunuzu GitHub'a güvenle yüklemeniz için .env dosyası kullanır.
+### 3) ORS API anahtarını ayarlayın
 
-OpenRouteService (ORS) API sitesinden ücretsiz bir anahtar alın.
+Ana dizinde `.env` dosyası oluşturun ve içine şu satırı ekleyin:
 
-Projenizin ana klasöründe .env adında bir dosya oluşturun.
+```
+ORS_API_KEY="SİZİN_GERÇEK_API_ANAHTARINIZ"
+```
 
-.env dosyasına anahtarınızı şu formatta yazın:
+> Not: `.gitignore` zaten `.env` dosyasını hariç tutuyorsa, anahtarınız GitHub'a gönderilmez.
 
-Kod snippet'i
-# .env dosyasının içeriği
-ORS_API_KEY="SİZİN_GERÇEK_API_ANAHTARINIZ" 
-Not: .gitignore dosyası sayesinde bu hassas bilgi GitHub'a yüklenmez.
+### 4) `main.py` içindeki konum ve ayarları düzenleyin
 
-3. Konumları ve Modu Güncelleme
+`main.py` içinde bulunan değişkenleri kendi koordinatlarınıza ve tercihlerinize göre güncelleyin:
 
-main.py dosyasını açın ve aşağıdaki değişkenleri kendi ihtiyacınıza göre ayarlayın:
+* `ARKADAS_KONUMLARI` — 3 arkadaşın `[enlem, boylam]` formatında listesi.
+* `GEÇİCİ_ADAY_MEKANLAR` — kontrol etmek istediğiniz aday lokasyonların listesi.
+* `YOLCULUK_MODU` — örn: `'driving-car'`, `'foot-walking'`, `'cycling-regular'`.
 
-ARKADAS_KONUMLARI: 3 arkadaşın (Enlem, Boylam) koordinatlarını güncelleyin.
+Örnek:
 
-YOLCULUK_MODU: Tercih ettiğiniz modu seçin. (Örn: 'driving-car' veya 'foot-walking')
+```python
+ARKADAS_KONUMLARI = [
+    (40.990, 29.124),  # Arkadaş A
+    (41.005, 28.976),  # Arkadaş B
+    (40.987, 29.035),  # Arkadaş C
+]
 
-4. Çalıştırma
+YOLCULUK_MODU = 'driving-car'
+```
 
-Sanal ortamınız aktifken terminalde kodu çalıştırın:
+### 5) Çalıştırın
 
-Bash
+Sanal ortam aktifken:
+
+```bash
 python main.py
-🔑 Kullanılan Teknolojiler
-Python 3: Projenin ana dili.
+```
 
-requests: Harita API'lerine HTTP istekleri göndermek için.
+Çıktıda her aday mekan için üç kullanıcının süreleri, hesaplanan "Adalet Puanı" ve en adil yer gösterilir.
 
-geopy: Koordinatların işlenmesi için.
+---
 
-python-dotenv: API anahtarını .env dosyasından güvenli bir şekilde okumak için.
+## Nasıl Çalışır? (Detaylı)
 
-OpenRouteService (ORS) API: Gerçek yolculuk mesafesi ve süresi verilerini çekmek için.
+1. Kullanıcı konumları (`ARKADAS_KONUMLARI`) ve aday mekanlar (`GEÇİCİ_ADAY_MEKANLAR`) alınır.
+2. Her aday mekan için, proje ORS Directions API'yi kullanarak **her kullanıcıdan o mekana olan gerçek yolculuk süresini** çeker.
+3. Aday mekanın adalet puanı, üç sürenin maksimum eksi minimum farkı veya en uzun ve en kısa süre arasındaki fark şeklinde hesaplanır.
+4. Adalet puanı en düşük olan aday, önerilen "En Adil Buluşma Noktası" olur.
 
-💡 İleri Geliştirme Fikirleri
-Bu bir öğrenme projesi olduğu için, aşağıdaki özellikler eklenerek proje daha da geliştirilebilir:
+> İleri seviyede alternatif adalet fonksiyonları: ağırlıklı farklar (ör. toplam süre + normalize fark), medyan bazlı ölçümler, veya kullanıcı tercihleri (ör. bir kullanıcının daha az yolculuk yapmasını istemesi).
 
-Dinamik POI (Point of Interest) Çekme: GEÇİCİ_ADAY_MEKANLAR listesini elle girmek yerine, merkez noktanın etrafındaki restoranları/kafeleri ORS POI API'si veya Google Places API'si ile otomatik olarak çekme.
+---
 
-Görselleştirme: Elde edilen sonucu, arkadaşların konumları ve önerilen en adil buluşma noktasının işaretlendiği interaktif bir haritada (Folium kütüphanesi ile) gösterme.
+## Dosya Yapısı
 
-Daha Karmaşık Optimizasyon: Sadece farkı değil, aynı zamanda toplam minimum süreyi de hesaba katan ağırlıklı bir adalet puanı kullanma.
+```
+Fair-Meetup-Finder/
+├─ .gitignore
+├─ README.md                    # (Bu dosya)
+├─ main.py                      # Uygulamanın giriş noktası
+├─ requirements.txt             # Bağımlılıklar
+└─ (isteğe bağlı) examples/     # Örnek konum/çalıştırma çıktıları
+```
 
-Kullanıcı Girişi: Koordinatları koda yazmak yerine, programın başında kullanıcıdan terminal aracılığıyla adresleri isteme.
+`main.py` içinde kod; ORS istekleri, süre hesaplama ve adalet metriğinin uygulanması bulunur.
+
+---
+
+## requirements.txt
+
+Projede kullanılan temel paketler (örnek):
+
+```
+requests
+geopy
+python-dotenv
+```
+
+Mevcut `requirements.txt` dosyasını kontrol edin; eksikse `pip freeze` ile proje ihtiyaçlarına göre güncelleyin.
+
+---
+
+## Örnek Çıktı
+
+```
+Aday Mekan: Cafe X
+ - Süreler: [12, 15, 14] dakika
+ - Adalet Puanı: 3
+
+Aday Mekan: Restaurant Y
+ - Süreler: [25, 10, 18] dakika
+ - Adalet Puanı: 15
+
+En Adil Buluşma Noktası: Cafe X (Adalet Puanı: 3)
+```
+
+---
+
+## Geliştirme Fikirleri / Yol Haritası
+
+* **Dinamik POI çekme:** Aday mekan listesini elle girmek yerine, ORS veya başka bir Places API ile merkezin etrafındaki restoran/kafe/POI'leri otomatik çek.
+* **Harita Görselleştirme:** Sonucu interaktif bir haritada göster (Folium veya Leaflet).
+* **Web Arayüzü / CLI:** Terminal tabanlı input yerine adres tabanlı veya web arayüzü ile kullanıcı dostu giriş.
+* **Çoklu kullanıcı desteği:** 3'ten fazla kullanıcıyı destekleyecek şekilde genişletme.
+* **Alternatif optimizasyonlar:** Minimum toplam seyahat süresi + adalet dengesi gibi kombinasyonlar.
+
+---
+
+## Katkıda Bulunma
+
+Katkılar memnuniyetle karşılanır. Fork -> Feature branch -> Pull request iş akışı kullanılabilir. Küçük iyileştirmeler için Issues açın veya direkt PR gönderin.
+
+**Kodlama tarzı:** Basit ve okunabilir olmalı; fonksiyonlar tek bir sorumluluk prensibine uygun tutulmalı.
+
+---
+
+## Lisans
+
+Varsa buraya lisans bilgisi ekleyin (örn. MIT). Henüz lisans eklemediyseniz projenize uygun bir lisans eklemenizi öneririm.
+
+---
+
+## İletişim
+
+Proje sahibi: **bilalyazicioglu**
+
+Sorular/öneriler için GitHub Issues veya doğrudan repo sahibiyle iletişime geçebilirsiniz.
+
+---
+
+*Not:* README içinde örnek konumlar, kullanım senaryoları veya `main.py`'den alınmış örnek çıktılar eklemek, projeyi kullanacak kişilerin işe başlamasını kolaylaştırır. İsterseniz ben `README.md` dosyasını doğrudan repo için hazır hâle getirecek şekilde (Türkçe veya İngilizce) daha kısa veya daha uzun bir versiyon daha oluşturayım.
