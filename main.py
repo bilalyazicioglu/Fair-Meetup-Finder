@@ -61,6 +61,10 @@ def get_travel_time_ors(start_lat_lon, end_lat_lon, mode):
 
 def main():
     """Projenin ana çalışma döngüsü."""
+    print("--- Arkadaş Konumları ---")
+    print("Birinci Konum: ", ARKADAS_KONUMLARI[0])
+    print("İkinci Konum: ", ARKADAS_KONUMLARI[1])
+    print("Üçüncü Konum: ", ARKADAS_KONUMLARI[2])
     merkez_nokta = hesapla_geometrik_merkez(ARKADAS_KONUMLARI)
     print("--- Konum Ortaklama Projesi Başladı ---")
     print(f"Hesaplanan Geometrik Merkez: {merkez_nokta}")
